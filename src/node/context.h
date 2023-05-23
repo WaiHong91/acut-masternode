@@ -50,7 +50,7 @@ struct NodeContext {
     interfaces::WalletClient* wallet_client{nullptr};
     std::unique_ptr<CScheduler> scheduler;
     std::function<void()> rpc_interruption_point = [] {};
-    //! Dash
+    //! Acut
     std::unique_ptr<LLMQContext> llmq_ctx;
 
     std::unique_ptr<CEvoDB> evodb;

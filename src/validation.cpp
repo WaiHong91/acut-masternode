@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
-// Copyright (c) 2014-2023 The Dash Core developers
+// Copyright (c) 2014-2023 The Acut Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -588,7 +588,7 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
             const CTransaction* ptxConflicting = pool.GetConflictTx(txin.prevout);
             if (ptxConflicting)
             {
-                // Transaction conflicts with mempool and RBF doesn't exist in Dash
+                // Transaction conflicts with mempool and RBF doesn't exist in Acut
                 return state.Invalid(ValidationInvalidReason::TX_CONFLICT, false, REJECT_DUPLICATE, "txn-mempool-conflict");
             }
         }
@@ -1971,7 +1971,7 @@ static int64_t nTimeSubsidy = 0;
 static int64_t nTimeValueValid = 0;
 static int64_t nTimePayeeValid = 0;
 static int64_t nTimeProcessSpecial = 0;
-static int64_t nTimeDashSpecific = 0;
+static int64_t nTimeAcutSpecific = 0;
 static int64_t nTimeConnect = 0;
 static int64_t nTimeIndex = 0;
 static int64_t nTimeCallbacks = 0;
@@ -2110,7 +2110,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         }
     }
 
-    /// DASH: Check superblock start
+    /// ACUT: Check superblock start
 
     // make sure old budget is the real one
     if (pindex->nHeight == chainparams.GetConsensus().nSuperblockStartBlock &&
@@ -2118,7 +2118,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         block_hash != chainparams.GetConsensus().nSuperblockStartHash) {
             return state.Invalid(ValidationInvalidReason::CONSENSUS, error("ConnectBlock(): invalid superblock start"), REJECT_INVALID, "bad-sb-start");
     }
-    /// END DASH
+    /// END ACUT
 
     // Start enforcing BIP68 (sequence locks) and BIP112 (CHECKSEQUENCEVERIFY) using versionbits logic.
     int nLockTimeFlags = 0;
@@ -2155,7 +2155,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
     // MUST process special txes before updating UTXO to ensure consistency between mempool and block processing
     if (!ProcessSpecialTxsInBlock(block, pindex, *m_quorum_block_processor, state, view, fJustCheck, fScriptChecks)) {
-        return error("ConnectBlock(DASH): ProcessSpecialTxsInBlock for block %s failed with %s",
+        return error("ConnectBlock(ACUT): ProcessSpecialTxsInBlock for block %s failed with %s",
                      pindex->GetBlockHash().ToString(), FormatStateMessage(state));
     }
 
@@ -2320,7 +2320,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     LogPrint(BCLog::BENCHMARK, "    - Verify %u txins: %.2fms (%.3fms/txin) [%.2fs (%.2fms/blk)]\n", nInputs - 1, MILLI * (nTime4 - nTime2), nInputs <= 1 ? 0 : MILLI * (nTime4 - nTime2) / (nInputs-1), nTimeVerify * MICRO, nTimeVerify * MILLI / nBlocksTotal);
 
 
-    // DASH
+    // ACUT
 
     // It's possible that we simply don't have enough data and this could fail
     // (i.e. block itself could be a correct one and we need to store it),
@@ -2328,7 +2328,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     // the peer who sent us this block is missing some data and wasn't able
     // to recognize that block is actually invalid.
 
-    // DASH : CHECK TRANSACTIONS FOR INSTANTSEND
+    // ACUT : CHECK TRANSACTIONS FOR INSTANTSEND
 
     if (m_isman->RejectConflictingBlocks()) {
         // Require other nodes to comply, send them some data in case they are missing it.
@@ -2337,13 +2337,13 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
             if (tx->vin.empty()) continue;
             while (llmq::CInstantSendLockPtr conflictLock = m_isman->GetConflictingLock(*tx)) {
                 if (m_clhandler->HasChainLock(pindex->nHeight, pindex->GetBlockHash())) {
-                    LogPrint(BCLog::ALL, "ConnectBlock(DASH): chain-locked transaction %s overrides islock %s\n",
+                    LogPrint(BCLog::ALL, "ConnectBlock(ACUT): chain-locked transaction %s overrides islock %s\n",
                             tx->GetHash().ToString(), ::SerializeHash(*conflictLock).ToString());
                     m_isman->RemoveConflictingLock(::SerializeHash(*conflictLock), *conflictLock);
                 } else {
                     // The node which relayed this should switch to correct chain.
                     // TODO: relay instantsend data/proof.
-                    return state.Invalid(ValidationInvalidReason::TX_CONFLICT_LOCK, error("ConnectBlock(DASH): transaction %s conflicts with transaction lock %s", tx->GetHash().ToString(), conflictLock->txid.ToString()), REJECT_INVALID, "conflict-tx-lock");
+                    return state.Invalid(ValidationInvalidReason::TX_CONFLICT_LOCK, error("ConnectBlock(ACUT): transaction %s conflicts with transaction lock %s", tx->GetHash().ToString(), conflictLock->txid.ToString()), REJECT_INVALID, "conflict-tx-lock");
                 }
             }
         }
@@ -2352,7 +2352,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     int64_t nTime5_1 = GetTimeMicros(); nTimeISFilter += nTime5_1 - nTime4;
     LogPrint(BCLog::BENCHMARK, "      - IS filter: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime5_1 - nTime4), nTimeISFilter * MICRO, nTimeISFilter * MILLI / nBlocksTotal);
 
-    // DASH : MODIFIED TO CHECK MASTERNODE PAYMENTS AND SUPERBLOCKS
+    // ACUT : MODIFIED TO CHECK MASTERNODE PAYMENTS AND SUPERBLOCKS
 
     // TODO: resync data (both ways?) and try to reprocess this block later.
     CAmount blockReward = nFees + GetBlockSubsidy(pindex->pprev->nBits, pindex->pprev->nHeight, chainparams.GetConsensus());
@@ -2363,7 +2363,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
     if (!IsBlockValueValid(*sporkManager, *governance, *::masternodeSync, block, pindex->nHeight, blockReward, strError)) {
         // NOTE: Do not punish, the node might be missing governance data
-        return state.Invalid(ValidationInvalidReason::NONE, error("ConnectBlock(DASH): %s", strError), REJECT_INVALID, "bad-cb-amount");
+        return state.Invalid(ValidationInvalidReason::NONE, error("ConnectBlock(ACUT): %s", strError), REJECT_INVALID, "bad-cb-amount");
     }
 
     int64_t nTime5_3 = GetTimeMicros(); nTimeValueValid += nTime5_3 - nTime5_2;
@@ -2371,16 +2371,16 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
     if (!IsBlockPayeeValid(*sporkManager, *governance, *block.vtx[0], pindex->nHeight, blockReward)) {
         // NOTE: Do not punish, the node might be missing governance data
-        return state.Invalid(ValidationInvalidReason::NONE, error("ConnectBlock(DASH): couldn't find masternode or superblock payments"), REJECT_INVALID, "bad-cb-payee");
+        return state.Invalid(ValidationInvalidReason::NONE, error("ConnectBlock(ACUT): couldn't find masternode or superblock payments"), REJECT_INVALID, "bad-cb-payee");
     }
 
     int64_t nTime5_4 = GetTimeMicros(); nTimePayeeValid += nTime5_4 - nTime5_3;
     LogPrint(BCLog::BENCHMARK, "      - IsBlockPayeeValid: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime5_4 - nTime5_3), nTimePayeeValid * MICRO, nTimePayeeValid * MILLI / nBlocksTotal);
 
-    int64_t nTime5 = GetTimeMicros(); nTimeDashSpecific += nTime5 - nTime4;
-    LogPrint(BCLog::BENCHMARK, "    - Dash specific: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime5 - nTime4), nTimeDashSpecific * MICRO, nTimeDashSpecific * MILLI / nBlocksTotal);
+    int64_t nTime5 = GetTimeMicros(); nTimeAcutSpecific += nTime5 - nTime4;
+    LogPrint(BCLog::BENCHMARK, "    - Acut specific: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime5 - nTime4), nTimeAcutSpecific * MICRO, nTimeAcutSpecific * MILLI / nBlocksTotal);
 
-    // END DASH
+    // END ACUT
 
     if (fJustCheck)
         return true;
@@ -4752,7 +4752,7 @@ bool CChainState::RollforwardBlock(const CBlockIndex* pindex, CCoinsViewCache& i
     // MUST process special txes before updating UTXO to ensure consistency between mempool and block processing
     CValidationState state;
     if (!ProcessSpecialTxsInBlock(block, pindex, *m_quorum_block_processor, state, inputs, false /*fJustCheck*/, false /*fScriptChecks*/)) {
-        return error("RollforwardBlock(DASH): ProcessSpecialTxsInBlock for block %s failed with %s",
+        return error("RollforwardBlock(ACUT): ProcessSpecialTxsInBlock for block %s failed with %s",
             pindex->GetBlockHash().ToString(), FormatStateMessage(state));
     }
 

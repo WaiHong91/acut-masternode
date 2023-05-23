@@ -21,7 +21,7 @@
 extern "C" {
 #include <relic.h>
 }
-#include <dashbls/bls.hpp>
+#include <acutbls/bls.hpp>
 
 using namespace emscripten;
 using namespace bls;

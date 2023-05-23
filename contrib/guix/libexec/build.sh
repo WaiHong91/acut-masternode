@@ -201,7 +201,7 @@ export PATH="${BASEPREFIX}/${HOST}/native/bin:${PATH}"
                     CXXFLAGS="${HOST_CXXFLAGS}" \
                     ${HOST_LDFLAGS:+LDFLAGS="${HOST_LDFLAGS}"}
 
-    sed -i.old 's/-lstdc++ //g' {./,src/dashbls/,src/secp256k1/}{config.status,libtool}
+    sed -i.old 's/-lstdc++ //g' {./,src/acutbls/,src/secp256k1/}{config.status,libtool}
 
 
     # Build Bitcoin Core

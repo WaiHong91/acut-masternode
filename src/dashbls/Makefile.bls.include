@@ -1,18 +1,18 @@
 # Copyright (c) 2021 The PIVX developers
-# Copyright (c) 2022 The Dash Core developers
+# Copyright (c) 2022 The Acut Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING.MIT or http://www.opensource.org/licenses/mit-license.php.
 
-LIBDASHBLS = libdashbls.la
+LIBACUTBLS = libacutbls.la
 
-DASHBLS_CPPFLAGS = -DBLSALLOC_MIMALLOC=1
+ACUTBLS_CPPFLAGS = -DBLSALLOC_MIMALLOC=1
 
-DASHBLS_INCLUDES = \
+ACUTBLS_INCLUDES = \
 	-I$(builddir) \
 	-I$(builddir)/obj \
-	-I$(top_srcdir)/include/dashbls
+	-I$(top_srcdir)/include/acutbls
 
-DASHBLS_H = \
+ACUTBLS_H = \
 	src/bls.hpp \
 	src/chaincode.hpp \
 	src/elements.hpp \
@@ -27,7 +27,7 @@ DASHBLS_H = \
 	src/threshold.hpp \
 	src/util.hpp
 
-libdashbls_la_SOURCES = \
+libacutbls_la_SOURCES = \
 	src/bls.cpp \
 	src/chaincode.cpp \
 	src/elements.cpp \
@@ -38,19 +38,19 @@ libdashbls_la_SOURCES = \
 	src/schemes.cpp \
 	src/threshold.cpp
 
-libdashbls_la_SOURCES += \
-	$(DASHBLS_H) \
+libacutbls_la_SOURCES += \
+	$(ACUTBLS_H) \
 	$(MIMALLOC_H) \
 	$(RELIC_H)
 
-libdashbls_la_LIBADD = \
+libacutbls_la_LIBADD = \
 	$(LIBMIMALLOC) \
 	$(LIBRELIC) \
 	$(GMP_LIBS)
 
-libdashbls_la_CPPFLAGS = $(AM_CPPFLAGS) $(RELIC_INCLUDES) $(MIMALLOC_INCLUDES) $(DASHBLS_INCLUDES) $(DASHBLS_CPPFLAGS)
-libdashbls_la_CXXFLAGS = $(AM_CXXFLAGS)
-libdashbls_la_LDFLAGS  = $(AM_LDFLAGS)
+libacutbls_la_CPPFLAGS = $(AM_CPPFLAGS) $(RELIC_INCLUDES) $(MIMALLOC_INCLUDES) $(ACUTBLS_INCLUDES) $(ACUTBLS_CPPFLAGS)
+libacutbls_la_CXXFLAGS = $(AM_CXXFLAGS)
+libacutbls_la_LDFLAGS  = $(AM_LDFLAGS)
 
 include Makefile.mimalloc.include
 include Makefile.relic.include
@@ -63,4 +63,4 @@ if USE_BENCH
 include Makefile.bench.include
 endif
 
-lib_LTLIBRARIES += $(LIBDASHBLS)
+lib_LTLIBRARIES += $(LIBACUTBLS)

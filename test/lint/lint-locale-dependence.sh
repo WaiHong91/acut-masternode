@@ -22,7 +22,7 @@ KNOWN_VIOLATIONS=(
     "src/util/system.cpp:.*fprintf"
 )
 
-REGEXP_IGNORE_EXTERNAL_DEPENDENCIES="^src/(dashbls/|immer/|crypto/ctaes/|leveldb/|secp256k1/|tinyformat.h|univalue/)"
+REGEXP_IGNORE_EXTERNAL_DEPENDENCIES="^src/(acutbls/|immer/|crypto/ctaes/|leveldb/|secp256k1/|tinyformat.h|univalue/)"
 
 LOCALE_DEPENDENT_FUNCTIONS=(
     alphasort    # LC_COLLATE (via strcoll)

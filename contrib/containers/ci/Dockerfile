@@ -42,9 +42,9 @@ RUN pip3 install \
     yq \
     multiprocess
 
-# dash_hash
-RUN git clone --depth 1 --no-tags https://github.com/dashpay/dash_hash
-RUN cd dash_hash && python3 setup.py install
+# acut_hash
+RUN git clone --depth 1 --no-tags https://github.com/acutpay/acut_hash
+RUN cd acut_hash && python3 setup.py install
 
 ARG USER_ID=1000
 ARG GROUP_ID=1000
@@ -52,8 +52,8 @@ ARG GROUP_ID=1000
 # add user with specified (or default) user/group ids
 ENV USER_ID ${USER_ID}
 ENV GROUP_ID ${GROUP_ID}
-RUN groupadd -g ${GROUP_ID} dash
-RUN useradd -u ${USER_ID} -g dash -s /bin/bash -m -d /home/dash dash
+RUN groupadd -g ${GROUP_ID} acut
+RUN useradd -u ${USER_ID} -g acut -s /bin/bash -m -d /home/acut acut
 
 # Packages needed for all target builds
 RUN apt-get update && apt-get install $APT_ARGS \
@@ -102,7 +102,7 @@ RUN \
   exit 0
 
 RUN \
-  mkdir -p /src/dash && \
+  mkdir -p /src/acut && \
   mkdir -p /cache/ccache && \
   mkdir /cache/depends && \
   mkdir /cache/sdk-sources && \
@@ -111,6 +111,6 @@ RUN \
   chown ${USER_ID}:${GROUP_ID} /cache && \
   chown ${USER_ID}:${GROUP_ID} -R /cache
 
-WORKDIR /src/dash
+WORKDIR /src/acut
 
-USER dash
+USER acut

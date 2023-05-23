@@ -17,7 +17,7 @@ CGO_LDFLAGS ?= "\
 -L$(CURR_DIR)../build/depends/mimalloc \
 -L$(CURR_DIR)../build/depends/relic/lib \
 -L$(CURR_DIR)../build/src \
--ldashbls -lrelic_s -lmimalloc-secure -lgmp"
+-lacutbls -lrelic_s -lmimalloc-secure -lgmp"
 
 CGO_CXXFLAGS ?= "\
 -I$(CURR_DIR)../build/depends/relic/include \
@@ -26,8 +26,8 @@ CGO_CXXFLAGS ?= "\
 -I$(CURR_DIR)../include"
 
 prepare:
-	@mkdir -p ../build/src/dashbls
-	cp -rv ../src/* ../build/src/dashbls
+	@mkdir -p ../build/src/acutbls
+	cp -rv ../src/* ../build/src/acutbls
 
 fmt:  ## Run go fmt to format Go files
 	$(GO) fmt

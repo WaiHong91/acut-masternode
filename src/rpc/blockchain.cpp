@@ -1,6 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2019 The Bitcoin Core developers
-// Copyright (c) 2014-2022 The Dash Core developers
+// Copyright (c) 2014-2022 The Acut Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -1325,8 +1325,8 @@ static UniValue gettxout(const JSONRPCRequest& request)
                         {RPCResult::Type::STR_HEX, "hex", ""},
                         {RPCResult::Type::NUM, "reqSigs", "Number of required signatures"},
                         {RPCResult::Type::STR_HEX, "type", "The type, eg pubkeyhash"},
-                        {RPCResult::Type::ARR, "addresses", "array of dash addresses",
-                            {{RPCResult::Type::STR, "address", "dash address"}}},
+                        {RPCResult::Type::ARR, "addresses", "array of acut addresses",
+                            {{RPCResult::Type::STR, "address", "acut address"}}},
                     }},
                 {RPCResult::Type::BOOL, "coinbase", "Coinbase or not"},
             }},

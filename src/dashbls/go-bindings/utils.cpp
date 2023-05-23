@@ -1,4 +1,4 @@
-// Copyright (c) 2021 The Dash Core developers
+// Copyright (c) 2021 The Acut Core developers
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include <vector>
-#include "dashbls/bls.hpp"
+#include "acutbls/bls.hpp"
 #include "privatekey.h"
 #include "elements.h"
 

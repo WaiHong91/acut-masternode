@@ -54,7 +54,7 @@ IGNORED_WARNINGS=(
     "unusedStructMember"
 )
 
-# We should attempt to update this with all dash specific code
+# We should attempt to update this with all acut specific code
 FILES=$(git ls-files -- "src/batchedlogger.*" \
                         "src/bench/bls*.cpp" \
                         "src/bls/*.cpp" \

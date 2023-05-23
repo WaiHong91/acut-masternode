@@ -1,9 +1,9 @@
-// Copyright (c) 2018-2021 The Dash Core developers
+// Copyright (c) 2018-2021 The Acut Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DASH_CRYPTO_BLS_WORKER_H
-#define DASH_CRYPTO_BLS_WORKER_H
+#ifndef ACUT_CRYPTO_BLS_WORKER_H
+#define ACUT_CRYPTO_BLS_WORKER_H
 
 #include <bls/bls.h>
 
@@ -192,4 +192,4 @@ private:
     }
 };
 
-#endif //DASH_CRYPTO_BLS_WORKER_H
+#endif //ACUT_CRYPTO_BLS_WORKER_H

@@ -1,5 +1,5 @@
 // Copyright (c) 2011-2015 The Bitcoin Core developers
-// Copyright (c) 2014-2022 The Dash Core developers
+// Copyright (c) 2014-2022 The Acut Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -1282,7 +1282,7 @@ void RPCConsole::setButtonIcons()
 void RPCConsole::reloadThemedWidgets()
 {
     clear();
-    ui->promptLabel->setHidden(GUIUtil::dashThemeActive());
+    ui->promptLabel->setHidden(GUIUtil::acutThemeActive());
     // Adjust button icon colors on theme changes
     setButtonIcons();
 }

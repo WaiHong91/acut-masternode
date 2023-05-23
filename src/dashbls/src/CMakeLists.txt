@@ -1,7 +1,7 @@
-file(GLOB HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../include/dashbls/*.hpp)
+file(GLOB HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../include/acutbls/*.hpp)
 source_group("SrcHeaders" FILES ${HEADERS})
 
-add_library(dashbls
+add_library(acutbls
   ${HEADERS}
   ${CMAKE_CURRENT_SOURCE_DIR}/privatekey.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/bls.cpp
@@ -14,42 +14,42 @@ add_library(dashbls
   ${CMAKE_CURRENT_SOURCE_DIR}/threshold.cpp
 )
 
-target_include_directories(dashbls
+target_include_directories(acutbls
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     $<$<BOOL:${GMP_FOUND}>:${GMP_INCLUDES}>
-    ${CMAKE_CURRENT_SOURCE_DIR}/../include/dashbls
+    ${CMAKE_CURRENT_SOURCE_DIR}/../include/acutbls
     ${CMAKE_CURRENT_SOURCE_DIR}/../depends/mimalloc/include
     ${CMAKE_CURRENT_SOURCE_DIR}/../depends/relic/include
     ${CMAKE_CURRENT_BINARY_DIR}/../depends/relic/include
 )
 
-target_compile_definitions(dashbls
+target_compile_definitions(acutbls
   PRIVATE
     BLSALLOC_MIMALLOC=1
 )
 
-target_link_libraries(dashbls
+target_link_libraries(acutbls
   PUBLIC
     relic_s
     mimalloc-static
 )
 
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../depends/relic/include/ DESTINATION include/dashbls)
-install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../depends/relic/include/ DESTINATION include/dashbls)
-install(FILES ${HEADERS} DESTINATION include/dashbls)
-install(FILES $<TARGET_FILE:dashbls> DESTINATION lib)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../depends/relic/include/ DESTINATION include/acutbls)
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../depends/relic/include/ DESTINATION include/acutbls)
+install(FILES ${HEADERS} DESTINATION include/acutbls)
+install(FILES $<TARGET_FILE:acutbls> DESTINATION lib)
 
 if(BUILD_BLS_TESTS)
   include(${CMAKE_CURRENT_SOURCE_DIR}/../depends/catch2/CMakeLists.txt)
 
   add_executable(runtest test.cpp)
   target_link_libraries(runtest
-                        PRIVATE dashbls
+                        PRIVATE acutbls
                         PRIVATE catch2)
 endif()
 
 if(BUILD_BLS_BENCHMARKS)
   add_executable(runbench test-bench.cpp)
-  target_link_libraries(runbench PRIVATE dashbls)
+  target_link_libraries(runbench PRIVATE acutbls)
 endif()

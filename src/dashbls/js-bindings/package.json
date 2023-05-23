@@ -1,5 +1,5 @@
 {
-  "name": "@dashevo/bls",
+  "name": "@acutevo/bls",
   "version": "1.0.0-beta.3",
   "description": "The most advanced BLS library for JavaScript",
   "main": "blsjs.js",
@@ -23,9 +23,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:dashpay/bls-signatures.git"
+    "url": "git@github.com:acutpay/bls-signatures.git"
   },
-  "homepage": "https://github.com/dashpay/bls-signatures/tree/main/js-bindings",
+  "homepage": "https://github.com/acutpay/bls-signatures/tree/main/js-bindings",
   "author": {
     "name": "Anton Suprunchuk",
     "email": "antouhou@gmail.com",

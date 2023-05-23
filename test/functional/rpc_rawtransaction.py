@@ -104,7 +104,7 @@ class RawTransactionsTest(BitcoinTestFramework):
         self.nodes[0].createrawtransaction(inputs=[], outputs={})  # Should not throw for backwards compatibility
         self.nodes[0].createrawtransaction(inputs=[], outputs=[])
         assert_raises_rpc_error(-8, "Data must be hexadecimal string", self.nodes[0].createrawtransaction, [], {'data': 'foo'})
-        assert_raises_rpc_error(-5, "Invalid Dash address", self.nodes[0].createrawtransaction, [], {'foo': 0})
+        assert_raises_rpc_error(-5, "Invalid Acut address", self.nodes[0].createrawtransaction, [], {'foo': 0})
         assert_raises_rpc_error(-3, "Invalid amount", self.nodes[0].createrawtransaction, [], {address: 'foo'})
         assert_raises_rpc_error(-3, "Amount out of range", self.nodes[0].createrawtransaction, [], {address: -1})
         assert_raises_rpc_error(-8, "Invalid parameter, duplicated address: %s" % address, self.nodes[0].createrawtransaction, [], multidict([(address, 1), (address, 1)]))
@@ -377,7 +377,7 @@ class RawTransactionsTest(BitcoinTestFramework):
 
         self.sync_all()
         inputs = [{ "txid" : txId, "vout" : vout['n'] }]
-        # Fee 10,000 satoshis, (1 - (10000 sat * 0.00000001 BTC/sat)) = 0.9999
+        # Fee 10,000 satoshis, (1 - (10000 sat * 0.00000001 BTC/sat)) = 0.8844
         outputs = { self.nodes[0].getnewaddress() : Decimal("0.99990000") }
         rawTx = self.nodes[2].createrawtransaction(inputs, outputs)
         rawTxSigned = self.nodes[2].signrawtransactionwithwallet(rawTx)

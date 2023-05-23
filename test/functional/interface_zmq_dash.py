@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-# Copyright (c) 2018-2022 The Dash Core developers
+# Copyright (c) 2018-2022 The Acut Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-"""Test the dash specific ZMQ notification interfaces."""
+"""Test the acut specific ZMQ notification interfaces."""
 
 import configparser
 from enum import Enum
@@ -12,7 +12,7 @@ import random
 import struct
 import time
 
-from test_framework.test_framework import DashTestFramework
+from test_framework.test_framework import AcutTestFramework
 from test_framework.mininode import P2PInterface
 from test_framework.util import assert_equal, assert_raises_rpc_error
 from test_framework.messages import (
@@ -98,7 +98,7 @@ class TestP2PConn(P2PInterface):
                 self.send_message(self.txes[inv.hash])
 
 
-class DashZMQTest (DashTestFramework):
+class AcutZMQTest (AcutTestFramework):
     def set_test_params(self):
         # That's where the zmq publisher will listen for subscriber
         self.address = "tcp://127.0.0.1:28333"
@@ -109,8 +109,8 @@ class DashZMQTest (DashTestFramework):
 
         extra_args = [[]] * 5
         extra_args[0] = node0_extra_args
-        self.set_dash_test_params(5, 4, fast_dip3_enforcement=True, extra_args=extra_args)
-        self.set_dash_llmq_test_params(4, 4)
+        self.set_acut_test_params(5, 4, fast_dip3_enforcement=True, extra_args=extra_args)
+        self.set_acut_llmq_test_params(4, 4)
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_py3_zmq()
@@ -119,7 +119,7 @@ class DashZMQTest (DashTestFramework):
 
     def run_test(self):
         self.subscribers = {}
-        # Check that dashd has been built with ZMQ enabled.
+        # Check that acutd has been built with ZMQ enabled.
         config = configparser.ConfigParser()
         config.read_file(open(self.options.configfile))
         import zmq
@@ -139,7 +139,7 @@ class DashZMQTest (DashTestFramework):
             # Wait a moment to avoid subscribing to recovered sig in the test before the one from the chainlock
             # has been sent which leads to test failure.
             time.sleep(1)
-            # Test all dash related ZMQ publisher
+            # Test all acut related ZMQ publisher
             self.test_recovered_signature_publishers()
             self.test_chainlock_publishers()
             self.test_governance_publishers()
@@ -367,7 +367,7 @@ class DashZMQTest (DashTestFramework):
             "end_epoch": proposal_time + 60,
             "payment_amount": 5,
             "payment_address": self.nodes[0].getnewaddress(),
-            "url": "https://dash.org"
+            "url": "https://acut.org"
         }
         proposal_hex = ''.join(format(x, '02x') for x in json.dumps(proposal_data).encode())
         collateral = self.nodes[0].gobject("prepare", "0", proposal_rev, proposal_time, proposal_hex)
@@ -441,4 +441,4 @@ class DashZMQTest (DashTestFramework):
         ])
 
 if __name__ == '__main__':
-    DashZMQTest().main()
+    AcutZMQTest().main()

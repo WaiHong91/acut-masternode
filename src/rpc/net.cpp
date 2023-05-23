@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2019 The Bitcoin Core developers
-// Copyright (c) 2014-2022 The Dash Core developers
+// Copyright (c) 2014-2022 The Acut Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -254,8 +254,8 @@ static UniValue addnode(const JSONRPCRequest& request)
         },
         RPCResult{RPCResult::Type::NONE, "", ""},
         RPCExamples{
-            HelpExampleCli("addnode", "\"192.168.0.6:9999\" \"onetry\"")
-    + HelpExampleRpc("addnode", "\"192.168.0.6:9999\", \"onetry\"")
+            HelpExampleCli("addnode", "\"192.168.0.6:8844\" \"onetry\"")
+    + HelpExampleRpc("addnode", "\"192.168.0.6:8844\", \"onetry\"")
         },
     }.Check(request);
 
@@ -298,9 +298,9 @@ static UniValue disconnectnode(const JSONRPCRequest& request)
         },
         RPCResult{RPCResult::Type::NONE, "", ""},
         RPCExamples{
-            HelpExampleCli("disconnectnode", "\"192.168.0.6:9999\"")
+            HelpExampleCli("disconnectnode", "\"192.168.0.6:8844\"")
     + HelpExampleCli("disconnectnode", "\"\" 1")
-    + HelpExampleRpc("disconnectnode", "\"192.168.0.6:9999\"")
+    + HelpExampleRpc("disconnectnode", "\"192.168.0.6:8844\"")
     + HelpExampleRpc("disconnectnode", "\"\", 1")
         },
     }.Check(request);
@@ -350,7 +350,7 @@ static UniValue getaddednodeinfo(const JSONRPCRequest& request)
                             {
                                 {RPCResult::Type::OBJ, "", "",
                                 {
-                                    {RPCResult::Type::STR, "address", "The dash server IP and port we're connected to"},
+                                    {RPCResult::Type::STR, "address", "The acut server IP and port we're connected to"},
                                     {RPCResult::Type::STR, "connected", "connection, inbound or outbound"},
                                 }},
                             }},

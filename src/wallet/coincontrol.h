@@ -96,7 +96,7 @@ public:
         vOutpoints.assign(setSelected.begin(), setSelected.end());
     }
 
-    // Dash-specific helpers
+    // Acut-specific helpers
 
     void UseCoinJoin(bool fUseCoinJoin)
     {

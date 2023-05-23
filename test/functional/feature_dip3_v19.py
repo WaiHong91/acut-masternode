@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2022 The Dash Core developers
+# Copyright (c) 2015-2022 The Acut Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -14,7 +14,7 @@ from io import BytesIO
 from test_framework.mininode import P2PInterface
 from test_framework.messages import CBlock, CBlockHeader, CCbTx, CMerkleBlock, FromHex, hash256, msg_getmnlistd, \
     QuorumId, ser_uint256
-from test_framework.test_framework import DashTestFramework
+from test_framework.test_framework import AcutTestFramework
 from test_framework.util import (
     assert_equal, wait_until
 )
@@ -41,9 +41,9 @@ class TestP2PConn(P2PInterface):
         return self.last_mnlistdiff
 
 
-class DIP3V19Test(DashTestFramework):
+class DIP3V19Test(AcutTestFramework):
     def set_test_params(self):
-        self.set_dash_test_params(6, 5, fast_dip3_enforcement=True, hpmn_count=2)
+        self.set_acut_test_params(6, 5, fast_dip3_enforcement=True, hpmn_count=2)
 
     def run_test(self):
         # Connect all nodes to node1 so that we always have the whole network connected

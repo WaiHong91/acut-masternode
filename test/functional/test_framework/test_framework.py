@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2016 The Bitcoin Core developers
-# Copyright (c) 2014-2022 The Dash Core developers
+# Copyright (c) 2014-2022 The Acut Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Base class for RPC testing."""
@@ -64,7 +64,7 @@ TEST_EXIT_PASSED = 0
 TEST_EXIT_FAILED = 1
 TEST_EXIT_SKIPPED = 77
 
-TMPDIR_PREFIX = "dash_func_test_"
+TMPDIR_PREFIX = "acut_func_test_"
 
 class SkipTest(Exception):
     """This exception is raised to skip a test"""
@@ -174,9 +174,9 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
     def parse_args(self):
         parser = argparse.ArgumentParser(usage="%(prog)s [options]")
         parser.add_argument("--nocleanup", dest="nocleanup", default=False, action="store_true",
-                            help="Leave dashds and test.* datadir on exit or error")
+                            help="Leave acutds and test.* datadir on exit or error")
         parser.add_argument("--noshutdown", dest="noshutdown", default=False, action="store_true",
-                            help="Don't stop dashds after the test execution")
+                            help="Don't stop acutds after the test execution")
         parser.add_argument("--cachedir", dest="cachedir", default=os.path.abspath(os.path.dirname(os.path.realpath(__file__)) + "/../../cache"),
                             help="Directory for caching pregenerated datadirs (default: %(default)s)")
         parser.add_argument("--tmpdir", dest="tmpdir", help="Root directory for datadirs")
@@ -194,9 +194,9 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
         parser.add_argument("--pdbonfailure", dest="pdbonfailure", default=False, action="store_true",
                             help="Attach a python debugger if test fails")
         parser.add_argument("--usecli", dest="usecli", default=False, action="store_true",
-                            help="use dash-cli instead of RPC for all commands")
-        parser.add_argument("--dashd-arg", dest="dashd_extra_args", default=[], action="append",
-                            help="Pass extra args to all dashd instances")
+                            help="use acut-cli instead of RPC for all commands")
+        parser.add_argument("--acutd-arg", dest="acutd_extra_args", default=[], action="append",
+                            help="Pass extra args to all acutd instances")
         parser.add_argument("--timeoutscale", dest="timeout_scale", default=1, type=int,
                             help="Scale the test timeouts by multiplying them with the here provided value (default: %(default)s)")
         parser.add_argument("--perf", dest="perf", default=False, action="store_true",
@@ -238,10 +238,10 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
 
         config = self.config
 
-        self.options.bitcoind = os.getenv("BITCOIND", default=config["environment"]["BUILDDIR"] + '/src/dashd' + config["environment"]["EXEEXT"])
-        self.options.bitcoincli = os.getenv("BITCOINCLI", default=config["environment"]["BUILDDIR"] + '/src/dash-cli' + config["environment"]["EXEEXT"])
+        self.options.bitcoind = os.getenv("BITCOIND", default=config["environment"]["BUILDDIR"] + '/src/acutd' + config["environment"]["EXEEXT"])
+        self.options.bitcoincli = os.getenv("BITCOINCLI", default=config["environment"]["BUILDDIR"] + '/src/acut-cli' + config["environment"]["EXEEXT"])
 
-        self.extra_args_from_options = self.options.dashd_extra_args
+        self.extra_args_from_options = self.options.acutd_extra_args
 
         os.environ['PATH'] = os.pathsep.join([
             os.path.join(config['environment']['BUILDDIR'], 'src'),
@@ -307,7 +307,7 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
         else:
             for node in self.nodes:
                 node.cleanup_on_exit = False
-            self.log.info("Note: dashds were not stopped and may still be running")
+            self.log.info("Note: acutds were not stopped and may still be running")
 
         should_clean_up = (
             not self.options.nocleanup and
@@ -534,7 +534,7 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
             chain_name_conf_arg = chain
             chain_name_conf_section = chain
             chain_name_conf_arg_value = '1'
-        with open(os.path.join(data_dir, "dash.conf"), 'w', encoding='utf8') as f:
+        with open(os.path.join(data_dir, "acut.conf"), 'w', encoding='utf8') as f:
             f.write("{}={}\n".format(chain_name_conf_arg, chain_name_conf_arg_value))
             f.write("[{}]\n".format(chain_name_conf_section))
             f.write("port=" + str(node_p2p_port) + "\n")
@@ -552,7 +552,7 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
             os.makedirs(os.path.join(data_dir, 'stdout'), exist_ok=True)
 
     def start_node(self, i, *args, **kwargs):
-        """Start a dashd"""
+        """Start a acutd"""
 
         node = self.nodes[i]
 
@@ -563,7 +563,7 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
             coverage.write_all_rpc_commands(self.options.coveragedir, node.rpc)
 
     def start_nodes(self, extra_args=None, *args, **kwargs):
-        """Start multiple dashds"""
+        """Start multiple acutds"""
 
         if extra_args is None:
             extra_args = [None] * self.num_nodes
@@ -583,12 +583,12 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
                 coverage.write_all_rpc_commands(self.options.coveragedir, node.rpc)
 
     def stop_node(self, i, expected_stderr='', wait=0):
-        """Stop a dashd test node"""
+        """Stop a acutd test node"""
         self.nodes[i].stop_node(expected_stderr=expected_stderr, wait=wait)
         self.nodes[i].wait_until_stopped()
 
     def stop_nodes(self, expected_stderr='', wait=0):
-        """Stop multiple dashd test nodes"""
+        """Stop multiple acutd test nodes"""
         for node in self.nodes:
             # Issue RPC to stop nodes
             node.stop_node(expected_stderr=expected_stderr, wait=wait)
@@ -763,7 +763,7 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
         # User can provide log level as a number or string (eg DEBUG). loglevel was caught as a string, so try to convert it to an int
         ll = int(self.options.loglevel) if self.options.loglevel.isdigit() else self.options.loglevel.upper()
         ch.setLevel(ll)
-        # Format logs the same as dashd's debug.log with microprecision (so log files can be concatenated and sorted)
+        # Format logs the same as acutd's debug.log with microprecision (so log files can be concatenated and sorted)
         formatter = logging.Formatter(fmt='%(asctime)s.%(msecs)03d000Z %(name)s (%(levelname)s): %(message)s', datefmt='%Y-%m-%dT%H:%M:%S')
         formatter.converter = time.gmtime
         fh.setFormatter(formatter)
@@ -853,7 +853,7 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
             self.log.debug("Copy cache directory {} to node {}".format(cache_node_dir, i))
             to_dir = get_datadir_path(self.options.tmpdir, i)
             shutil.copytree(cache_node_dir, to_dir)
-            initialize_datadir(self.options.tmpdir, i, self.chain)  # Overwrite port/rpcport in dash.conf
+            initialize_datadir(self.options.tmpdir, i, self.chain)  # Overwrite port/rpcport in acut.conf
 
     def _initialize_chain_clean(self):
         """Initialize empty blockchain for use by the test.
@@ -871,9 +871,9 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
             raise SkipTest("python3-zmq module not available.")
 
     def skip_if_no_bitcoind_zmq(self):
-        """Skip the running test if dashd has not been compiled with zmq support."""
+        """Skip the running test if acutd has not been compiled with zmq support."""
         if not self.is_zmq_compiled():
-            raise SkipTest("dashd has not been built with zmq enabled.")
+            raise SkipTest("acutd has not been built with zmq enabled.")
 
     def skip_if_no_wallet(self):
         """Skip the running test if wallet has not been compiled."""
@@ -892,17 +892,17 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
             raise SkipTest("BDB has not been compiled.")
 
     def skip_if_no_wallet_tool(self):
-        """Skip the running test if dash-wallet has not been compiled."""
+        """Skip the running test if acut-wallet has not been compiled."""
         if not self.is_wallet_tool_compiled():
-            raise SkipTest("dash-wallet has not been compiled")
+            raise SkipTest("acut-wallet has not been compiled")
 
     def skip_if_no_cli(self):
-        """Skip the running test if dash-cli has not been compiled."""
+        """Skip the running test if acut-cli has not been compiled."""
         if not self.is_cli_compiled():
-            raise SkipTest("dash-cli has not been compiled.")
+            raise SkipTest("acut-cli has not been compiled.")
 
     def is_cli_compiled(self):
-        """Checks whether dash-cli was compiled."""
+        """Checks whether acut-cli was compiled."""
         return self.config["components"].getboolean("ENABLE_CLI")
 
     def is_wallet_compiled(self):
@@ -910,7 +910,7 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
         return self.config["components"].getboolean("ENABLE_WALLET")
 
     def is_wallet_tool_compiled(self):
-        """Checks whether dash-wallet was compiled."""
+        """Checks whether acut-wallet was compiled."""
         return self.config["components"].getboolean("ENABLE_WALLET_TOOL")
 
     def is_zmq_compiled(self):
@@ -942,7 +942,7 @@ class MasternodeInfo:
         self.hpmn = hpmn
 
 
-class DashTestFramework(BitcoinTestFramework):
+class AcutTestFramework(BitcoinTestFramework):
     def set_test_params(self):
         """Tests must this method to change default values for number of nodes, topology, etc"""
         raise NotImplementedError
@@ -954,7 +954,7 @@ class DashTestFramework(BitcoinTestFramework):
         """Tests must override this method to define test logic"""
         raise NotImplementedError
 
-    def set_dash_test_params(self, num_nodes, masterodes_count, extra_args=None, fast_dip3_enforcement=False, hpmn_count=0):
+    def set_acut_test_params(self, num_nodes, masterodes_count, extra_args=None, fast_dip3_enforcement=False, hpmn_count=0):
         self.mn_count = masterodes_count
         self.hpmn_count = hpmn_count
         self.num_nodes = num_nodes
@@ -972,18 +972,18 @@ class DashTestFramework(BitcoinTestFramework):
                 self.extra_args[i].append("-dip3params=30:50")
 
         # make sure to activate dip8 after prepare_masternodes has finished its job already
-        self.set_dash_dip8_activation(200)
+        self.set_acut_dip8_activation(200)
 
         # LLMQ default test params (no need to pass -llmqtestparams)
         self.llmq_size = 3
         self.llmq_threshold = 2
 
-        # This is nRequestTimeout in dash-q-recovery thread
+        # This is nRequestTimeout in acut-q-recovery thread
         self.quorum_data_thread_request_timeout_seconds = 10
         # This is EXPIRATION_TIMEOUT + EXPIRATION_BIAS in CQuorumDataRequest
         self.quorum_data_request_expiration_timeout = 360
 
-    def set_dash_dip8_activation(self, activate_after_block):
+    def set_acut_dip8_activation(self, activate_after_block):
         self.dip8_activation_height = activate_after_block
         for i in range(0, self.num_nodes):
             self.extra_args[i].append("-dip8params=%d" % (activate_after_block))
@@ -1041,7 +1041,7 @@ class DashTestFramework(BitcoinTestFramework):
     def activate_v19(self, expected_activation_height=None):
         self.activate_by_name('v19', expected_activation_height)
 
-    def set_dash_llmq_test_params(self, llmq_size, llmq_threshold):
+    def set_acut_llmq_test_params(self, llmq_size, llmq_threshold):
         self.llmq_size = llmq_size
         self.llmq_threshold = llmq_threshold
         for i in range(0, self.num_nodes):
@@ -1238,7 +1238,7 @@ class DashTestFramework(BitcoinTestFramework):
 
     def remove_masternode(self, idx):
         mn = self.mninfo[idx]
-        rawtx = self.nodes[0].createrawtransaction([{"txid": mn.collateral_txid, "vout": mn.collateral_vout}], {self.nodes[0].getnewaddress(): 999.9999})
+        rawtx = self.nodes[0].createrawtransaction([{"txid": mn.collateral_txid, "vout": mn.collateral_vout}], {self.nodes[0].getnewaddress(): 999.8844})
         rawtx = self.nodes[0].signrawtransactionwithwallet(rawtx)
         self.nodes[0].sendrawtransaction(rawtx["hex"])
         self.nodes[0].generate(1)

@@ -1,9 +1,9 @@
 # Copyright (c) 2021 The PIVX developers
-# Copyright (c) 2022 The Dash Core developers
+# Copyright (c) 2022 The Acut Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING.MIT or http://www.opensource.org/licenses/mit-license.php.
 
-DASHBLS_RUNBENCH = runbench
+ACUTBLS_RUNBENCH = runbench
 
 runbench_SOURCES = \
 	src/test-bench.cpp \
@@ -11,12 +11,12 @@ runbench_SOURCES = \
 
 runbench_SOURCES += \
 	$(RELIC_H) \
-	$(DASHBLS_H)
+	$(ACUTBLS_H)
 
-runbench_CPPFLAGS = $(AM_CPPFLAGS) $(DASHBLS_INCLUDES) $(RELIC_INCLUDES)
+runbench_CPPFLAGS = $(AM_CPPFLAGS) $(ACUTBLS_INCLUDES) $(RELIC_INCLUDES)
 runbench_CXXFLAGS = $(AM_CXXFLAGS)
 runbench_LDFLAGS  = -static $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
-runbench_LDADD = $(LIBDASHBLS)
+runbench_LDADD = $(LIBACUTBLS)
 
-noinst_PROGRAMS += $(DASHBLS_RUNBENCH)
+noinst_PROGRAMS += $(ACUTBLS_RUNBENCH)

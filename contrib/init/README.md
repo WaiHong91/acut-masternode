@@ -1,11 +1,11 @@
 Sample configuration files for:
 ```
-SystemD: dashd.service
-Upstart: dashd.conf
-OpenRC:  dashd.openrc
-         dashd.openrcconf
-CentOS:  dashd.init
-macOS:   org.dash.dashd.plist
+SystemD: acutd.service
+Upstart: acutd.conf
+OpenRC:  acutd.openrc
+         acutd.openrcconf
+CentOS:  acutd.init
+macOS:   org.acut.acutd.plist
 ```
 have been made available to assist packagers in creating node packages here.
 
