@@ -1797,16 +1797,16 @@ bool AppInitMain(const CoreContext& context, NodeContext& node, interfaces::Bloc
     } else {
         vSporkAddresses = Params().SporkAddresses();
     }
-    for (const auto& address: vSporkAddresses) {
-        if (!::sporkManager->SetSporkAddress(address)) {
-            return InitError(_("Invalid spork address specified with -sporkaddr"));
-        }
-    }
+    // for (const auto& address: vSporkAddresses) {
+    //     if (!::sporkManager->SetSporkAddress(address)) {
+    //         return InitError(_("Invalid spork address specified with -sporkaddr"));
+    //     }
+    // }
 
-    int minsporkkeys = args.GetArg("-minsporkkeys", Params().MinSporkKeys());
-    if (!::sporkManager->SetMinSporkKeys(minsporkkeys)) {
-        return InitError(_("Invalid minimum number of spork signers specified with -minsporkkeys"));
-    }
+    // int minsporkkeys = args.GetArg("-minsporkkeys", Params().MinSporkKeys());
+    // if (!::sporkManager->SetMinSporkKeys(minsporkkeys)) {
+    //     return InitError(_("Invalid minimum number of spork signers specified with -minsporkkeys"));
+    // }
 
 
     if (args.IsArgSet("-sporkkey")) { // spork priv key
